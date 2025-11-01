@@ -174,11 +174,11 @@ export  default function BoundingBox(arg,opt) {
     BoundingBox.prototype.show = function(opt) {
         
         if (!this.node) return this;
-        //new JSYG(this.container).appendTo(new JSYG(this.node).offsetParent('farthest')); //GUSA
+        new JSYG(this.container).appendTo_(new JSYG(this.node).offsetParent('farthest')); //GUSA
 
-        let container = new JSYG(this.container);
-        let node = new JSYG(this.node).offsetParent('farthest');
-	node[0].appendChild(container[0]);
+        //let container = new JSYG(this.container);
+        //let node = new JSYG(this.node).offsetParent('farthest');
+	//node[0].appendChild(container[0]);
 
         this.display = true;
         this.update(opt);

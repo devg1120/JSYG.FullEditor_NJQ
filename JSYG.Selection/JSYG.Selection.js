@@ -285,7 +285,8 @@ function each( obj, callback ) {
         that = this;
         
         container.attr('id',this.id)
-            .appendTo(document.body)
+            //.appendTo(document.body)
+            .appendTo_(document.body)
             .setDim({
                 x:e.pageX,
             y:e.pageY,

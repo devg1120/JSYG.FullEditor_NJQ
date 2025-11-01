@@ -435,14 +435,21 @@ export default    function Editor(arg,opt) {
         
         if (target.length == 1) return this;
             
+        console.log("target length",target.length );
         g = new JSYG('<g>');
         
         parent = target.parent();
 
-        this.target( g.appendTo(parent).append(target) ).update();
-                
-        this.trigger("change",this.node,this._target);
-        
+        //this.target( g.appendTo(parent).append(target) ).update(); //GUSA
+        let p =  g.appendTo_(parent)
+        p.append_(target)
+        this.target(p).update();
+
+        //this.trigger("change",this.node,this._target); //GUSA
+        const event = new CustomEvent('change',{ detail: this._target });
+        this.node.dispatchEvent(event);
+
+
         return this;
     };
         
@@ -456,7 +463,9 @@ export default    function Editor(arg,opt) {
 	
         this.hide();
         
-        this.trigger("change",this.node,this._target);
+        //this.trigger("change",this.node,this._target);
+        const event = new CustomEvent('change',{ detail: this._target });
+        this.node.dispatchEvent(event);
     
         return this;
     };
@@ -1362,7 +1371,8 @@ export default    function Editor(arg,opt) {
             };
 
             if (!this.container.parentNode) {
-                new JSYG(this.container).appendTo(this.editor.box.container).addClass(this.className);
+                //new JSYG(this.container).appendTo(this.editor.box.container).addClass(this.className); //GUSA
+                new JSYG(this.container).appendTo_(this.editor.box.container)[0].classList.add(this.className);
             }
 
             if (tag === 'path') {
@@ -2114,7 +2124,8 @@ export default    function Editor(arg,opt) {
             backup,
 
             createShape = function() {
-                var shape = new JSYG('<'+that.shape+'>').appendTo(that.container);
+                //var shape = new JSYG('<'+that.shape+'>').appendTo(that.container); //GUSA
+                var shape = new JSYG('<'+that.shape+'>').appendTo_(that.container);
                 if (that.xlink) shape.href(that.xlink);
                 shape.setDim({x:0,y:0,width:that.width,height:that.height});
                 return shape;
@@ -2156,7 +2167,8 @@ export default    function Editor(arg,opt) {
                     new JSYG(that.editor[n].container).show();
                     that.editor[n].display = true;
                 }
-                if (canHideMainPoints(node)) new JSYG(that.container).appendTo(parent);
+                //if (canHideMainPoints(node)) new JSYG(that.container).appendTo(parent);
+                if (canHideMainPoints(node)) new JSYG(that.container).appendTo_(parent);
                 else new JSYG(that.container).insertAfter( parent.querySelector("path") );
                 
                 that.editor.update();
@@ -2200,7 +2212,8 @@ export default    function Editor(arg,opt) {
                 };
 
                 [0,1,2,3].forEach(function(i) {
-                    list[i] = createShape().on('mousedown',resizeFromCorner)[0];
+                    //list[i] = createShape().on('mousedown',resizeFromCorner)[0]; //GUSA
+                    list[i] = createShape()[0].addEventListener('mousedown',resizeFromCorner);
                 });
             }
 
@@ -2213,7 +2226,10 @@ export default    function Editor(arg,opt) {
                     };
 
                     [4,5].forEach(function(i) {
-                        list[i] = createShape().on('mousedown',horizontalResize)[0];
+                        //list[i] = createShape().on('mousedown',horizontalResize)[0]; //GUSA
+                        let shape = createShape();
+                        shape[0].addEventListener('mousedown',horizontalResize);
+                        list[i] = shape[0];
                     });
                 }
 
@@ -2224,7 +2240,10 @@ export default    function Editor(arg,opt) {
                     };
 
                     [6,7].forEach(function(i) {
-                        list[i] = createShape().on('mousedown',verticalResize)[0];
+                        //list[i] = createShape().on('mousedown',verticalResize)[0]; //GUSA
+                        let shape = createShape();
+                        shape[0].addEventListener('mousedown',verticalResize);
+                        list[i] = shape[0];
                     });
                 }
 
@@ -2235,8 +2254,11 @@ export default    function Editor(arg,opt) {
                     keyup:function(e) { if (e.keyCode === 17) { jNode.resizable('set',{keepRatio:false}); } }
                 };
 
-                jDoc.data('svgeditor',documentFct);
-                jDoc.on(documentFct);
+                //jDoc.data('svgeditor',documentFct);
+                jDoc.data_('svgeditor',documentFct);
+                //jDoc.on(documentFct);
+                jDoc[0].addEventListener("keydown",documentFct["keydown"]);
+                jDoc[0].addEventListener("keyup",documentFct["keyup"]);
             }
 
             this.list = list;
@@ -2498,9 +2520,12 @@ export default    function Editor(arg,opt) {
                 this.shape = 'div';
             }
 
-            new JSYG(this.container).appendTo(parent).addClass(this.className);
+            //new JSYG(this.container).appendTo(parent).addClass(this.className); //GUSA
+            new JSYG(this.container).appendTo_(parent)[0].classList.add(this.className);
 
-            var shape = new JSYG('<'+this.shape+'>').appendTo(this.container);
+            //var shape = new JSYG('<'+this.shape+'>').appendTo(this.container);//GUSA
+            var shape = new JSYG('<'+this.shape+'>').appendTo_(this.container);
+
             if (this.xlink) shape.href(this.xlink);
             shape.setDim({x:0,y:0,width:this.width,height:this.height});
             shape.css('cursor',this.cursor);
@@ -2545,7 +2570,8 @@ export default    function Editor(arg,opt) {
                     new JSYG(that.editor[n].container).show();
                     that.editor[n].display = true;
                 }
-                new JSYG(that.container).appendTo(parent); //pour remettre les controles au 1er plan
+                //new JSYG(that.container).appendTo(parent); //pour remettre les controles au 1er plan
+                new JSYG(that.container).appendTo_(parent); //pour remettre les controles au 1er plan
                 that.editor.update();
                 that.editor.trigger('dragend',node,e);
                 that.editor.trigger('change',node,e);

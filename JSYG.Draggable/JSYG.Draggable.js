@@ -569,7 +569,8 @@ export default    function Draggable(arg,opt) {
                 //this.unselectable = field.data('draggableUnselect');//GUSA
                 this.unselectable = field.data_('draggableUnselect');
             });
-            jNode.removeData('draggable');
+            //jNode.removeData('draggable'); //GUSA
+            jNode.removeData_('draggable');
             this.enabled = false;
             return this;
         };

@@ -126,7 +126,7 @@ export default    function Rotatable(arg,opt) {
         if (cursor) {
             new JSYG(this.field).each(function() {
                 var field = new JSYG(this);
-                field.data('cursorInit',field.css('cursor'));
+                field.data_('cursorInit',field.css('cursor'));
                 field.css('cursor',cursor);
             });
         }
@@ -192,6 +192,9 @@ export default    function Rotatable(arg,opt) {
                 'mousemove':mousemoveFct,
                 'mouseup':remove
             });
+        let c = new JSYG(this)
+        c[0].removeEventListener("mousemove",mousemoveFct);
+        c[0].removeEventListener("mouseup",remove);
             
             if (hasChanged) {
                 if (that.type!=='transform' && that.shape === 'noAttribute') jNode.mtx2attrs();
@@ -199,12 +202,16 @@ export default    function Rotatable(arg,opt) {
             }
             that.trigger('end',that.node,e);
         };
-        
+        /*
         new JSYG(document).on({
             'mousemove':mousemoveFct,
             'mouseup':remove
         });
-        
+        */
+        let doc = new JSYG(document)
+        doc[0].addEventListener("mousemove",mousemoveFct);
+        doc[0].addEventListener("mouseup",remove);
+
         this.trigger('start',that.node,e);
         
         return this;
@@ -231,13 +238,15 @@ export default    function Rotatable(arg,opt) {
         
         new JSYG(this.field).each(function() {
             var field = new JSYG(this);
-            field.on(that.event,start);
+            //field.on(that.event,start); //GUSA
+            field[0].addEventListener(that.event,start);
         });
         
         this.disable = function() {
             new JSYG(this.field).each(function() {
                 var field = new JSYG(this);
-                field.off(that.event,start);
+                //field.off(that.event,start); //GUSA
+                field[0].removeEventListener(that.event,start);
             });
             this.enabled = false;
             return this;

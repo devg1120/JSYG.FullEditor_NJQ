@@ -57,7 +57,8 @@ export default    function Container(arg) {
                 try { $this.addMtx(mtx); } //éléments non tracés
                 catch(e){}
                 
-                $this.appendTo(that[0]);
+                //$this.appendTo(that[0]);
+                $this.appendTo_(that[0]);
                 
                 that.trigger('additem',that[0],this);
                 that.trigger('change');

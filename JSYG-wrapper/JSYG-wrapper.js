@@ -6,11 +6,13 @@ import Point from "jsyg-point"
 import { push } from "../jquery/src/var/push.js";
 import { access } from "../jquery/src/core/access.js";
 import { dataUser } from "../jquery/src/data/var/dataUser.js";
+import { nodeName } from "../jquery/src/core/nodeName.js";
 
 //import Path  from "../JSYG.Path/JSYG.Path.js"
 
     "use strict";
 		
+
 
 var rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,
 	rmultiDash = /[A-Z]/g;
@@ -231,10 +233,24 @@ export default   function JSYG(arg,context) {
         return !!elmt && elmt.namespaceURI === NS.svg;
     }
 	
-    JSYG.prototype.appendTo = function(para) {
+    JSYG.prototype.appendTo_ = function(parent) {
+        let parent_node = new JSYG(parent);
+        parent_node[0].appendChild(this[0]);
+        return this;
+    }
+    JSYG.prototype.appendTo__ = function(para) {
         //console.trace();
 	throw new Error("error");
     }
+
+    JSYG.prototype.append_ = function(elems) {
+        //console.log(typeof elems);
+        for (let i = 0; i < elems.length; i++) {
+               this[0].appendChild( elems[i] );
+        }
+        return this;
+    }
+    
     JSYG.prototype.isSVG = function() {
         return isSVG(this[0]);
     };
@@ -2187,7 +2203,8 @@ function getOffsetParent(element) {
             originY="50%";
             
             if (a[0] == null) {
-                value = $this.data('transfOrigin') || originX+' '+originY;
+                //value = $this.data('transfOrigin') || originX+' '+originY;
+                value = $this.data_('transfOrigin') || originX+' '+originY;
                 return false;
             }
             
