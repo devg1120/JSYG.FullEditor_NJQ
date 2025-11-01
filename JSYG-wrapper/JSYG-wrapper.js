@@ -1508,7 +1508,12 @@ function getOffsetParent(element) {
      * @returns {Object} objet avec les propriétés x,y,width,height
      */
     JSYG.prototype.getDim = function(type) {
-        
+        console.log("getDim",  type);
+        console.log("getDim", typeof  type);
+        if (typeof  type == "object") {
+             console.trace();
+	}
+
         var node = this[0],
         dim=null,parent,box,boundingRect,
         hg,hd,bg,bd,
@@ -1523,6 +1528,7 @@ function getOffsetParent(element) {
         }
         
         if (isWindow(node)) {
+        console.log("-- isWindow");   
             
             dim = {
                 x : node.pageXOffset || document.documentElement.scrollLeft,
@@ -1532,6 +1538,7 @@ function getOffsetParent(element) {
             };
         }
         else if (node.nodeType === 9) {
+        console.log("-- nodeType 9");   
             
             dim = {
                 x : 0,
@@ -1542,6 +1549,7 @@ function getOffsetParent(element) {
         }
         else if (!node.parentNode) throw new Error(node+" : Il faut d'abord attacher l'élément au DOM.");
         else if (!type) {
+        console.log("-- !type", this.isSVG());   
             
             if (this.isSVG()) {
                 
@@ -1588,11 +1596,14 @@ function getOffsetParent(element) {
                 }
                 
             } else {
-                
-                dim = this.getDim( this.offsetParent() );
+                console.log("-----------------------------");
+                //dim = this.getDim( this.offsetParent() );   //GUSA
+                dim = this.getDim( "page" );   //GUSA
+
             }
         }
         else if (type === 'page') {
+        console.log("-- page");   
             
             if (tag === 'svg') {
                 
@@ -1657,6 +1668,7 @@ function getOffsetParent(element) {
             if (!this.isSVG() && JSYG.support.addTransfForBoundingRect) { dim = addTransform(dim,this.getMtx()); } //FF
         }
         else if (type === 'screen' || isWindow(type) || (type instanceof $ && isWindow(type[0]) ) ) {
+        console.log("-- screen");   
             
             jWin = new JSYG(window);
             dim = this.getDim('page');
@@ -1666,7 +1678,7 @@ function getOffsetParent(element) {
             dim.y-=jWin[0].scrollY;
         }
         else if (type.nodeType!=null || type instanceof $) {
-            
+        console.log("-- nodeType != null");   
             ref = type.nodeType!=null ? type : type[0];
             
             if (this.isSVG()) {
@@ -1731,8 +1743,11 @@ function getOffsetParent(element) {
             }
             
         }
-        else throw new Error(type+' : argument incorrect');
+        else {
+		throw new Error(type+' : argument incorrect');
+        }
         
+        //console.log("getDim dim",  dim);
         return dim;
     };
     

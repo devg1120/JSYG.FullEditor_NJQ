@@ -1232,7 +1232,10 @@ export default class FullEditor extends JSYG {
                 change : this.triggerChange,
                 
                 drag(e) {
-                    that.trigger("drag", that, e, editor._target);
+                    //that.trigger("drag", that, e, editor._target);
+                    const event = new CustomEvent('drag',{ detail: e });
+                    that[0].dispatchEvent(event);
+
                 },
                 
                 changetarget() {

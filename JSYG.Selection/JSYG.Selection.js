@@ -314,7 +314,8 @@ function each( obj, callback ) {
                 $this = new JSYG(this);
                 try {
                     dim = $this.getDim('screen');
-                    $this.data("dimSelection",dim);
+                    //$this.data("dimSelection",dim);//GUSA
+                    $this.data_("dimSelection",dim);
                 }
                 catch(e) {
                     //éléments n'ayant pas de dimensions (exemple balise defs)
@@ -335,7 +336,9 @@ function each( obj, callback ) {
             each(list,function() {  //GUSA
                 
                 var elmt = new JSYG(this),
-                dimElmt = elmt.data("dimSelection"),
+                //dimElmt = elmt.data("dimSelection"), //GUSA
+                dimElmt = elmt.data_("dimSelection"),
+
                 indOver = dimElmt && that.selectedOver.indexOf(this),
                 isNewElmt = (indOver === -1);
                 
@@ -345,23 +348,37 @@ function each( obj, callback ) {
                     
                     if (isNewElmt) {
                         
-                        elmt.addClass(that.classOver);
-                        that.trigger('selectover',that.node,e,this);
+                        //elmt.addClass(that.classOver);
+                        elmt[0].classList.add(that.classOver);
+                        //that.trigger('selectover',that.node,e,this);
+                    const event = new CustomEvent('selectover',{ detail: e });
+                    that.node.dispatchEvent(event);
+
                         that.selectedOver.push(this);
                     }
-                    else that.trigger('selectmove',that.node,e,this);
+                    else { 
+			    //that.trigger('selectmove',that.node,e,this);
+                    const event = new CustomEvent('selectmove',{ detail: e });
+                    that.node.dispatchEvent(event);
+		    }
                 }
                 else {
                     
                     if (!isNewElmt) {
-                        elmt.removeClass(that.classOver);
-                        that.trigger('selectout',that.node,e,this);
+                        //elmt.removeClass(that.classOver);
+                        elmt[0].classList.remove(that.classOver);
+                        //that.trigger('selectout',that.node,e,this);
+                    const event = new CustomEvent('selectout',{ detail: e });
+                    that.node.dispatchEvent(event);
+
                         that.selectedOver.splice(indOver,1);
                     }
                 }
             });
             
-            that.trigger('drag',that.node,e,this);
+            //that.trigger('drag',that.node,e,this);
+                    const event = new CustomEvent('drag',{ detail: e });
+                    that.node.dispatchEvent(event);
         });
         
         resize.on('dragend',function(e) {

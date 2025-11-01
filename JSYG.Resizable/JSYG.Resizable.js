@@ -582,8 +582,8 @@ export default    function Resizable(arg,opt) {
             }
             
             //new JSYG(document).off(fcts); //GUSA
-            new JSYG(document)[0].removeEventListener("mousemove", fcts["mousemove"]);
-            new JSYG(document)[0].removeEventListener("mouseup", fcts["mouseup"]);
+            new JSYG(document)[0].removeEventListener("mousemove", mousemoveFct);
+            new JSYG(document)[0].removeEventListener("mouseup", remove);
             
             if (hasChanged) {
                 if (that.type!=='transform' && that.shape === 'noAttribute') {
@@ -599,7 +599,8 @@ export default    function Resizable(arg,opt) {
             
             new JSYG(this.field).each(function() {
                 var field = new JSYG(this);
-                field.data('cursorInit',field.css('cursor'));
+                //field.data('cursorInit',field.css('cursor'));
+                field.data_('cursorInit',field.css('cursor'));
                 field.css('cursor',cursor);
             });
         }
@@ -610,8 +611,8 @@ export default    function Resizable(arg,opt) {
         fcts.mouseup = remove;
         
         //new JSYG(document).on(fcts); //GUSA
-        new JSYG(document)[0].addEventListener("mousemove", fcts["mousemove"]);
-        new JSYG(document)[0].addEventListener("mouseup", fcts["mouseup"]);
+        new JSYG(document)[0].addEventListener("mousemove", mousemoveFct);
+        new JSYG(document)[0].addEventListener("mouseup", remove);
        
 
         //this.trigger('start',that.node,e); //GUSA
@@ -646,15 +647,18 @@ export default    function Resizable(arg,opt) {
         
         new JSYG(this.field).each(function() {
             var field = new JSYG(this);
-            field.data('resizableUnselect',this.unselectable);
+            //field.data('resizableUnselect',this.unselectable);
+            field.data_('resizableUnselect',this.unselectable);
             this.unselectable = 'on'; //IE
-            field.on("mousedown",start);
+            //field.on("mousedown",start);
+            field[0].addEventListener("mousedown",start);
         });
         
         this.disable = function() {
             new JSYG(this.field).each(function() {
                 var field = new JSYG(this);
-                field.off("mousedown",start);
+                //field.off("mousedown",start);
+                field[0].removeEventListener("mousedown",start);
                 this.unselectable = field.data('resizableUnselect');
             });
             this.enabled = false;
