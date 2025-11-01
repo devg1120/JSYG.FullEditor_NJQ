@@ -191,7 +191,7 @@ export default   function JSYG(arg,context) {
     JSYG.fn = JSYG.prototype = new $();
 		
     JSYG.prototype.constructor = JSYG;
-    JSYG.prototype.plugin_dic = {};
+    //JSYG.prototype.plugin_dic = {};
 	
     /**
      * Liste des propriétés SVG stylables en css
@@ -231,6 +231,10 @@ export default   function JSYG(arg,context) {
         return !!elmt && elmt.namespaceURI === NS.svg;
     }
 	
+    JSYG.prototype.appendTo = function(para) {
+        //console.trace();
+	throw new Error("error");
+    }
     JSYG.prototype.isSVG = function() {
         return isSVG(this[0]);
     };

@@ -554,16 +554,20 @@ export default    function Draggable(arg,opt) {
         
         new JSYG(this.field).each(function() {
             var field = new JSYG(this);
-            field.data('draggableUnselect',this.unselectable);
+            //field.data('draggableUnselect',this.unselectable); //GUSA
+            field.data_('draggableUnselect',this.unselectable);
             this.unselectable = 'on'; //IE
-            field.on("mousedown",start);
+            //field.on("mousedown",start);//GUSA
+            field[0].addEventListener("mousedown",start);
         });
         
         this.disable = function() {
             new JSYG(this.field).each(function() {
                 var field = new JSYG(this);
-                field.off("mousedown",start);
-                this.unselectable = field.data('draggableUnselect');
+                //field.off("mousedown",start);//GUSA
+                field[0].removeEventListener("mousedown",start);
+                //this.unselectable = field.data('draggableUnselect');//GUSA
+                this.unselectable = field.data_('draggableUnselect');
             });
             jNode.removeData('draggable');
             this.enabled = false;

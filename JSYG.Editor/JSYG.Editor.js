@@ -2101,7 +2101,12 @@ export default    function Editor(arg,opt) {
                 this.shape = 'div';
             }
 
-            new JSYG(this.container).appendTo(parent).addClass(this.className);
+            //new JSYG(this.container).appendTo(parent).addClass(this.className); //GUSA
+
+            let container = new JSYG(this.container);
+            let node_ = new JSYG(parent)
+	    node_[0].appendChild(container[0]);
+	    node_[0].classList.add(this.className);
 
             var list = [],
             that = this,
