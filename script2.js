@@ -111,8 +111,9 @@ window.addEventListener('DOMContentLoaded', function() {
     selector = "#openDocument"
     eventName = 'click'
     handler = () => {
+	    console.log("**************************");
         //svgEditor.chooseFile().then(svgEditor.loadFile).catch(alert);
-        svgEditor.chooseFile().then((arg) => svgEditor.loadFile(arg)).catch(alert);  // GUSA
+        svgEditor.chooseFile2().then((arg) => svgEditor.loadFile(arg)).catch(alert);  // GUSA
     };
     target = document.querySelector(selector)
     if (target) {

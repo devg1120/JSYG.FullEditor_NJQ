@@ -1722,6 +1722,21 @@ export default class FullEditor extends JSYG {
             });
         }
 
+        chooseFile2() {
+             console.log("chooseFile2");           
+            const that = this;
+            
+            return new Promise((resolve, reject) => {
+                
+                let inp = JSYG("<input>").attr("type","file");
+
+		inp[0].addEventListener("change",function() {
+                    resolve(this.files[0]);
+                })
+                inp[0].click();
+            });
+        }
+
         loadImageAsDoc(arg) {
             
             const that = this;
