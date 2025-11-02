@@ -213,12 +213,19 @@ export default    function Editor(arg,opt) {
 
             container = new Container(this._tempoContainer).freeItems();
 
-            container.insertBefore(target[0]);
+           // container.insertBefore(target[0]);  //GUSA
+		
+          const parentElement = target[0].parentNode;
+          if (parentElement) {
+             parentElement.insertBefore(container[0], target[0]);
+          }
+
 
             container.addItems(target);
 
             this._target = this._tempoContainer;
-            this._oldTargets = container.children();
+            //this._oldTargets = container.children(); //GUSA
+            this._oldTargets = container[0].children;
         }
         else {
             this._target = target[0];

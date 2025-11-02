@@ -1510,7 +1510,7 @@ function getOffsetParent(element) {
      * @returns {Object} objet avec les propriétés x,y,width,height
      */
     JSYG.prototype.getDim = function(type) {
-        console.log("getDim", typeof  type, type);
+        //console.log("getDim", typeof  type, type);
 
         var node = this[0],
         dim=null,parent,box,boundingRect,
@@ -1594,7 +1594,6 @@ function getOffsetParent(element) {
                 }
                 
             } else {
-                console.log("-----------------------------");
                 dim = this.getDim( this.offsetParent() );   //GUSA
                 //dim = this.getDim( "page" );   //GUSA
 

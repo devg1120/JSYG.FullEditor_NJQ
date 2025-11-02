@@ -57,12 +57,17 @@ export default    function Container(arg) {
                 try { $this.addMtx(mtx); } //éléments non tracés
                 catch(e){}
                 
-                //$this.appendTo(that[0]);
+                //$this.appendTo(that[0]); //GUSA
                 $this.appendTo_(that[0]);
                 
-                that.trigger('additem',that[0],this);
-                that.trigger('change');
-                
+                //that.trigger('additem',that[0],this); //GUSA
+
+  const event = new CustomEvent('additem',{ detail: this });
+  that[0].dispatchEvent(event);
+
+                //that.trigger('change'); //GUSA
+  that[0].dispatchEvent(new Event('change'));
+      
             });
             
         });
@@ -87,10 +92,12 @@ export default    function Container(arg) {
     
     Container.prototype.freeItems = function(elmt) {
         
-        var parent = this.parent()[0],
+        //var parent = this.parent()[0],
+        var parent = this[0].parentNode,
         mtx = this.getMtx(),
         that = this,
-        args = JSYG.makeArray( arguments.length === 0 ? this.children() : arguments);
+        //args = JSYG.makeArray( arguments.length === 0 ? this.children() : arguments);
+        args = JSYG.makeArray( arguments.length === 0 ? new JSYG(this[0].children) : arguments);
         
         args.reverse().forEach(function(elmt) {
             
@@ -103,10 +110,22 @@ export default    function Container(arg) {
                 try { $this.setMtx( mtx.multiply($this.getMtx(that)) ); }
                 catch(e) {}
                 
-                $this.insertAfter(that[0]);
-                
-                that.trigger('freeitem',that[0],this);
-                that.trigger('change');
+            //    $this.insertAfter(that[0]);
+
+           const parentElement = that[0].parentNode;
+            if (parentElement) {                         
+	        let nextSibling = that[0].nextSibling;
+                parentElement.insertBefore($this[0], nextSibling);
+            }
+
+
+                //that.trigger('freeitem',that[0],this);
+    const event = new CustomEvent('freeitem',{ detail: this });
+    that[0].dispatchEvent(event);
+
+                //that.trigger('change');
+ that[0].dispatchEvent(new Event('change'))
+
                 
             });
         });
