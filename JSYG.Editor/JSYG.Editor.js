@@ -200,7 +200,7 @@ export default    function Editor(arg,opt) {
         if (arg == null) {
             if (!this._target) return null;
             target = new JSYG(this._target);
-            return this.isMultiSelection() ? target.children() : target;
+            return this.isMultiSelection() ? target.children() : target; //GUSA
         }
 
         display = this.display;
@@ -2555,7 +2555,8 @@ export default    function Editor(arg,opt) {
             dragstart = function(e) {
                 for (var n in backup) {
                     if (!backup[n]) continue;
-                    new JSYG(that.editor[n].container).hide();
+                    //new JSYG(that.editor[n].container).hide();  //GUSA
+                    new JSYG(that.editor[n].container)[0].style.display = 'none';
                     that.editor[n].display = false;
                 }
                 that.editor.box.displayShadow = false;
@@ -2574,7 +2575,8 @@ export default    function Editor(arg,opt) {
                 that.editor.box.displayShadow = displayShadow;
                 for (var n in backup){
                     if (!backup[n]) continue;
-                    new JSYG(that.editor[n].container).show();
+                    //new JSYG(that.editor[n].container).show(); //GUSA
+                    new JSYG(that.editor[n].container)[0].style.display = 'block';
                     that.editor[n].display = true;
                 }
                 //new JSYG(that.container).appendTo(parent); //pour remettre les controles au 1er plan

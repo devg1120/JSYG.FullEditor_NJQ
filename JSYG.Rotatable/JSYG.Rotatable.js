@@ -185,13 +185,16 @@ export default    function Rotatable(arg,opt) {
             
             new JSYG(that.field).each(function() {
                 var field = new JSYG(this);
-                field.css('cursor',field.data('cursorInit'));
+                //field.css('cursor',field.data('cursorInit')); //GUSA
+                field.css('cursor',field.data_('cursorInit'));
             });
             
+		/* GUSA
             new JSYG(this).off({
                 'mousemove':mousemoveFct,
                 'mouseup':remove
             });
+	    */
         let c = new JSYG(this)
         c[0].removeEventListener("mousemove",mousemoveFct);
         c[0].removeEventListener("mouseup",remove);

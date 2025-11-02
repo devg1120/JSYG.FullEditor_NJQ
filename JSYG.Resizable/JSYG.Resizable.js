@@ -578,7 +578,8 @@ export default    function Resizable(arg,opt) {
                 
                 new JSYG(that.field).each(function() {
                     var field = new JSYG(this);
-                    field.css('cursor',field.data('cursorInit'));
+                    //field.css('cursor',field.data('cursorInit'));
+                    field.css('cursor',field.data_('cursorInit'));
                 });
             }
             
@@ -660,7 +661,8 @@ export default    function Resizable(arg,opt) {
                 var field = new JSYG(this);
                 //field.off("mousedown",start);
                 field[0].removeEventListener("mousedown",start);
-                this.unselectable = field.data('resizableUnselect');
+                //this.unselectable = field.data('resizableUnselect'); //GUSA
+                this.unselectable = field.data_('resizableUnselect');
             });
             this.enabled = false;
             return this;
