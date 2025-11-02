@@ -75,7 +75,7 @@ export default class FullEditor extends JSYG {
          * @description You can also pass an object with several key shortcuts as keys/values
          */
         registerKeyShortCut(key_dict) {
-	    console.dir(key_dict);
+	    //console.dir(key_dict);
             if (this.enabled) {
                new JSYG(document)[0].addEventListener('keydown', 
                         function(e) {
@@ -784,7 +784,7 @@ export default class FullEditor extends JSYG {
                content2[0].removeChild(child);
            }
 	   */
-            console.log("_insertFrame");
+            //console.log("_insertFrame");
   /*
             this._frameShadow = new JSYG("<rect>")          //GUSA
                 .attr({x:2,y:2})

@@ -243,7 +243,8 @@ export default    function Resizable(arg,opt) {
      * @returns {Resizable}
      */
     Resizable.prototype.start = function(e) {
-        
+        console.log("Resizeble start");
+
         e.preventDefault();
         
         var jNode = new JSYG(this.node),

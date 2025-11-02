@@ -306,6 +306,7 @@ function each( obj, callback ) {
         if (this.resizableOptions) resize.set(this.resizableOptions);
         
         resize.on('dragstart',function(e) {
+        //resize[0].addEventListener('dragstart',function(e) {
              //console.log("dragstart");
             //list.each(function() {
             each(list, function() {  //GUSA
@@ -327,10 +328,11 @@ function each( obj, callback ) {
         });
         
         resize.on('drag',function(e) {
+        //resize[0].addEventListener('drag',function(e) {
 
             
             var div = new JSYG(this),
-            dimDiv = div.getDim('screen');
+            dimDiv = div.getDim('screen');//-------------------------
             
             //list.each(function() {
             each(list,function() {  //GUSA
@@ -382,6 +384,7 @@ function each( obj, callback ) {
         });
         
         resize.on('dragend',function(e) {
+        //resize[0].addEventListener('dragend',function(e) {
             
             var elmts = [];
             
@@ -403,15 +406,18 @@ function each( obj, callback ) {
             that.trigger('dragend',that.node,e,this);
             
             //new JSYG(this).remove();
-            this.remove();  //GUSA
+            new JSYG(this)[0].remove();
+            //this.remove();  //GUSA
         });
         
         resize.on('end',function() { 
+        //resize[0].addEventListener('end',function(e) {
 		//new JSYG(this).remove(); 
-		this.remove();  //GUSA
+		new JSYG(this)[0].remove(); 
+		//this.remove();  //GUSA
 	});
         
-        resize.start(e);
+        resize.start(e);  //-------------------------
         
 
         console.log(" end  _draw");
