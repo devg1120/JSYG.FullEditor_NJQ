@@ -394,7 +394,8 @@ JSYG.prototype.removeData_ = function( key ) {
    }
 
     JSYG.prototype.attr = function(name,value) {
-		
+	    
+
         if (!name) return this;
 		
         if (typeof name == "object") {

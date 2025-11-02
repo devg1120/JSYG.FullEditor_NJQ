@@ -200,7 +200,8 @@ export default    function Editor(arg,opt) {
         if (arg == null) {
             if (!this._target) return null;
             target = new JSYG(this._target);
-            return this.isMultiSelection() ? target.children() : target; //GUSA
+            //return this.isMultiSelection() ? target.children() : target; //GUSA
+            return this.isMultiSelection() ? JSYG(target[0].children) : target; //GUSA
         }
 
         display = this.display;
@@ -445,7 +446,8 @@ export default    function Editor(arg,opt) {
         console.log("target length",target.length );
         g = new JSYG('<g>');
         
-        parent = target.parent();
+        //parent = target.parent(); //GUSA
+        parent = JSYG(target[0].parentNode);
 
         //this.target( g.appendTo(parent).append(target) ).update(); //GUSA
         let p =  g.appendTo_(parent)
