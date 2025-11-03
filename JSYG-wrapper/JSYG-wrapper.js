@@ -3415,12 +3415,14 @@ function getOffsetParent(element) {
      */
     JSYG.prototype.toSVGString = function(standalone,imagesQuality) {
         
-        var jNode = this.clone(),
+        //var jNode = this.clone(),  //GUSA
+        var jNode = JSYG(this[0].cloneNode(true)),
         dim = this.getTag() != 'svg' && this.getDim(),
         promise;
         
-        jNode.find('script').remove();
-        
+        //jNode.find('script').remove(); //GUSA
+        JSYG(jNode[0].getElementsByTagName("script")).remove();
+
         if (standalone && this.isSVG()) {
             jNode.walkTheDom(function() {
                 var $this = new JSYG(this);

@@ -1723,7 +1723,7 @@ export default class FullEditor extends JSYG {
         }
 
         chooseFile2() {
-             console.log("chooseFile2");           
+            // console.log("chooseFile2");           
             const that = this;
             
             return new Promise((resolve, reject) => {
@@ -2035,7 +2035,7 @@ export default class FullEditor extends JSYG {
                 const a = new JSYG('<a>').attr({
                     href:url,
                     download:`file.${format}`
-                }).appendTo('body');
+                }).appendTo_('body'); //GUSA
                 
                 a[0].click();
                 a.remove();
