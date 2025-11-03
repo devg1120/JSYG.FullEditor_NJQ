@@ -444,12 +444,20 @@ JSYG.prototype.removeData_ = function( key ) {
          return this
 
     }
+
     JSYG.prototype.remove = function( ) {
 	 //   console.log("----remove");
-	 this[0].remove();
+	 //console.log(this[0])
+	 if (this[0]) {
+              let p = this[0].parentNode;
+              if (p) {
+                 p.removeChild(this[0]);
+	      }
+	 }
          return this
 
     }
+    
 import { isArrayLike } from "../jquery/src/core/isArrayLike.js";
 
     //JSYG.prototype.each = function(obj, callback) {
