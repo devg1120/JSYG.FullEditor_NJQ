@@ -243,7 +243,7 @@ export default    function Resizable(arg,opt) {
      * @returns {Resizable}
      */
     Resizable.prototype.start = function(e) {
-        console.log("Resizeble start");
+        //console.log("Resizeble start");
 
         e.preventDefault();
         
@@ -591,7 +591,7 @@ export default    function Resizable(arg,opt) {
                 if (that.type!=='transform' && that.shape === 'noAttribute') {
                     jNode.mtx2attrs({keepRotation:that.keepRotation});
                 }
-                that.trigger('dragend',that.node,e);
+                that.trigger('dragend',that.node,e);                //POINT
             }
             
             that.trigger('end',that.node,e);

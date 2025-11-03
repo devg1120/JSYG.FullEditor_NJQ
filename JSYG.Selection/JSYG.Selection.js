@@ -221,7 +221,8 @@ function each( obj, callback ) {
      */
     Selection.prototype.setSelection = function(arg,e) {
 
-        
+        console.trace("setSelection");
+
         var that = this;
         
         this.deselectAll(e);
@@ -278,7 +279,6 @@ function each( obj, callback ) {
     }
     Selection.prototype._draw = function(e) {
         
-        console.log(" start  _draw");
         var list = new JSYG(this.list),
         container = new JSYG(this.container),
         resize = new Resizable(container),
@@ -307,7 +307,7 @@ function each( obj, callback ) {
         
         resize.on('dragstart',function(e) {
         //resize[0].addEventListener('dragstart',function(e) {
-             //console.log("dragstart");
+             console.log("dragstart");
             //list.each(function() {
             each(list, function() {  //GUSA
                 
@@ -420,7 +420,6 @@ function each( obj, callback ) {
         resize.start(e);  //-------------------------
         
 
-        console.log(" end  _draw");
         return this;
         
     };
@@ -530,7 +529,6 @@ function each( obj, callback ) {
        //          //console.log("mouseup")       
 	//    },
             "mousedown" : function(e) {
-                 //console.log("mousedown")       
                 
                 if (e.which != 1) return;
                 
@@ -605,7 +603,7 @@ function each( obj, callback ) {
        //          //console.log("mouseup")       
 	//    },
             "mousedown" : function(e) {
-                 //console.log("mousedown")       
+                // console.log("mousedown")       
 		mousedown_ = true;
                 
                 if (e.which != 1) return;
@@ -622,7 +620,9 @@ function each( obj, callback ) {
                         that.setSelection( that.selected.concat(cible), e);
                     }
                 }
-                else if (!that.node || that._isIn(e)) drawing = true;
+                else if (!that.node || that._isIn(e))  {
+			drawing = true;
+		}
             },
             
             "drag:start" : function(e) {
