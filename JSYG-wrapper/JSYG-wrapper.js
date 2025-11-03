@@ -251,6 +251,24 @@ export default   function JSYG(arg,context) {
         return this;
     }
     
+    JSYG.prototype.prepend_ = function(elem) {
+        //console.log(typeof elems);
+               //this[0].appendChild( elems[i] );
+	       //A.parentNode.insertBefore(B, A.parentNode.firstElementChild)
+	       //this[0].parentNode.insertBefore(elem, this[0].parentNode.firstElementChild)
+	       this[0].insertBefore(elem, this[0].firstElementChild)
+        return this;
+    }
+    JSYG.prototype.prepend___ = function(elems) {
+        //console.log(typeof elems);
+        for (let i = 0; i < elems.length; i++) {
+               //this[0].appendChild( elems[i] );
+	       //A.parentNode.insertBefore(B, A.parentNode.firstElementChild)
+	       this[0].parentNode.insertBefore(elems[i], this[0].parentNode.firstElementChild)
+        }
+        return this;
+    }
+
     JSYG.prototype.isSVG = function() {
         return isSVG(this[0]);
     };
@@ -3620,7 +3638,10 @@ function getOffsetParent(element) {
         
         return this.each(function() {
             
-            new JSYG(this).parent().prepend(this);
+            //new JSYG(this).parent().prepend(this); //GUSA
+            //new JSYG(this).parent().prepend_(this); //GUSA
+		//JSYG(this.parentNode).prepend_(JSYG(this));
+	JSYG(this.parentNode).prepend_(this);
         });
     };
     
@@ -3646,7 +3667,8 @@ function getOffsetParent(element) {
         
         return this.each(function() {
             
-            new JSYG(this).parent().append(this);
+            //new JSYG(this).parent().append(this);  //GUSA
+		JSYG(this.parentNode).append_(JSYG(this));
         });
     };
     
