@@ -85,7 +85,8 @@ export default    function Path(arg) {
      * @returns {Path}
      */
     Path.prototype.clone = function() {
-        return new Path(new JSYG(this[0]).clone());
+        //return new Path(new JSYG(this[0]).clone());//GUSA
+        return new Path(JSYG(new JSYG(this[0])[0].cloneNode(true)));
     };
     
     /**

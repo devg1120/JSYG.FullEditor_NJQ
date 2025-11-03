@@ -1504,7 +1504,8 @@ export default    function Editor(arg,opt) {
                                 that.trigger('drag',node,e);
                             };
 
-                            shape = new JSYG('<'+that.shape+'>').appendTo(that.container);
+                            //shape = new JSYG('<'+that.shape+'>').appendTo(that.container);
+                            shape = new JSYG('<'+that.shape+'>').appendTo_(that.container);
 
                             if (that.xlink) shape.xlink = that.xlink;
 
@@ -1553,8 +1554,12 @@ export default    function Editor(arg,opt) {
 
                 last.setCenter(center.x,center.y);
 
-                last[ (isClosed ? 'add':'remove') + "Class" ](this.classNameClosing);
-
+                //last[ (isClosed ? 'add':'remove') + "Class" ](this.classNameClosing);
+                if (isClosed) {
+                      last[0].classList.add(this.classNameClosing);
+		} else {
+                      last[0].classList.remove(this.classNameClosing);
+		}
             }
             else if (tag === 'polyline' || tag === 'polygon') {
 
@@ -1584,7 +1589,8 @@ export default    function Editor(arg,opt) {
                             that.trigger('drag',node,e);
                         };
 
-                        shape = new JSYG('<'+that.shape+'>').appendTo(that.container);
+                        //shape = new JSYG('<'+that.shape+'>').appendTo(that.container);
+                        shape = new JSYG('<'+that.shape+'>').appendTo_(that.container);
                         shape.setDim({x:0,y:0,width:that.width,height:that.height});
                         shape.draggable('set',{
                             event:'mousedown',
@@ -1631,7 +1637,8 @@ export default    function Editor(arg,opt) {
                             that.trigger('drag',node,e);
                         };
 
-                        shape = new JSYG('<'+that.shape+'>').appendTo(that.container);
+                        //shape = new JSYG('<'+that.shape+'>').appendTo(that.container); //GUSA
+                        shape = new JSYG('<'+that.shape+'>').appendTo_(that.container);
                         shape.setDim({x:0,y:0,width:that.width,height:that.height});
 
                         shape.draggable('set',{

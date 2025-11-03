@@ -1060,13 +1060,15 @@ export default class FullEditor extends JSYG {
                 const modele = that.insertElementModel;
                 if (!modele) throw new Error("You must define a model");
 
-                const shape = new JSYG(modele).clone();
+                //const shape = new JSYG(modele).clone(); //GUSA
+                const shape = JSYG(modele.cloneNode(true));
+                //const shape = JSYG(JSYG(modele)[0].cloneNode(true));
                 const isText = JSYG.svgTexts.includes(shape.getTag());
 
                 that.insertElement(shape,e,isText);
 
-                if (that.autoEnableSelection) {
-                    
+                if (that.autoEnableSelection) {               //GUSA
+  /*                  
                     new JSYG(that.node).one('mouseup',() => {
                                           
                         that.shapeEditor.target(shape);
@@ -1081,6 +1083,25 @@ export default class FullEditor extends JSYG {
                         }
                         
                     });
+*/
+                    let handler = () => {
+                    new JSYG(that.node)[0].removeEventListener('mouseup', handler);
+                                          
+                        that.shapeEditor.target(shape);
+                        
+                        if (that.editText && isText) {
+                            that.textEditor.target(shape).show();
+                            that.textEditor.one("validate",_callback);
+                        }
+                        else {
+                            that.shapeEditor.show();
+                            if (_callback) _callback();
+                        }
+                        
+                    };
+                    new JSYG(that.node)[0].addEventListener('mouseup', handler);
+
+
                 }
             }
 
@@ -1265,8 +1286,15 @@ export default class FullEditor extends JSYG {
                 },
                 hide() {
                     const target = that.textEditor.target();
-                    if (!target.text()) target.remove();
-                    else that.shapeEditor.target(target).show();
+                    //if (!target.text()) {
+                    if (!target[0].textContent) {
+			    //target.remove();
+			    let p = target[0].parentNode;
+			    p.removeChild(target[0])
+		    }
+                    else {
+			    that.shapeEditor.target(target).show();
+		    }
                 },
                 validate() {
                     that.triggerChange();
@@ -1559,23 +1587,31 @@ export default class FullEditor extends JSYG {
 
         insertElement(elmt, pos, _preventEvent) {
 
-		console.log("insertElement");
+	    console.log("insertElement");
             
             let textNode;
             
             elmt = new JSYG(elmt);
             
-            //elmt.appendTo( this._getLayerSelector() );  //GUSA
-	    let target = document.querySelectorAll(this._getLayerSelector())
-            target[0].appendChild(elmt[0])
-            
+            elmt.appendTo_( this._getLayerSelector() );  //GUSA
+	    //let target = document.querySelectorAll(this._getLayerSelector())
+            //target[0].appendChild(elmt[0])
+            /*
             if (JSYG.svgTexts.includes(elmt.getTag()) && !elmt.text()) {
                 textNode = document.createTextNode("I");
                 elmt.append(textNode);
             }
-            
+            */
+
+            if (JSYG.svgTexts.includes(elmt.getTag()) && !elmt[0].textContent) {
+                textNode = document.createTextNode("I");
+                elmt.append_(JSYG(textNode));
+            }
+
+		/* //GUSA
             //if (pos instanceof JSYG.Event) elmt.setCenter( elmt.getCursorPos(pos) );
-            if (pos instanceof $.Event) elmt.setCenter( elmt.getCursorPos(pos) );
+            //if (pos instanceof $.Event) elmt.setCenter( elmt.getCursorPos(pos) );
+
             else {
                 
                 elmt.setDim({
@@ -1583,7 +1619,10 @@ export default class FullEditor extends JSYG {
                     y : pos && pos.y || 0
                 });
             }
-            
+            */
+
+            elmt.setCenter( elmt.getCursorPos(pos) );
+
             if (textNode) new JSYG(textNode).remove();
             
             if (!_preventEvent) {

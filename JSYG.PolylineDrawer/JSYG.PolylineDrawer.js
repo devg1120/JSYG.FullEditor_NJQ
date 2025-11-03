@@ -92,7 +92,8 @@ export default    function PolylineDrawer(opt) {
         
         var poly = new JSYG(polyElmt);
         
-        if (!poly.parent().length) throw new Error("Il faut attacher l'élément à l'arbre DOM");
+        //if (!poly.parent().length) throw new Error("Il faut attacher l'élément à l'arbre DOM");  //GUSA
+        if (!poly[0].parentNode) throw new Error("Il faut attacher l'élément à l'arbre DOM");
         
         var jSvg = this.area ? new JSYG(this.area) : poly.offsetParent('farthest'),
         mtx = poly.getMtx('screen').inverse(),
@@ -164,16 +165,23 @@ export default    function PolylineDrawer(opt) {
         this.end = function() {
             
             var first;
-                        
+ /*                       
             jSvg.off({
                 'mousemove':mousemove,
                 'mousedown':mousedown,
                 'dblclick':dblclick
             });
+*/
+        jSvg[0].removeEventListener("mousemove", mousemove);
+        jSvg[0].removeEventListener("mousedown", mousedown);
+        jSvg[0].removeEventListener("dblclick", dblclick);
             
             this.inProgress = false;
             
-            this.trigger('end',node,e);
+            //this.trigger('end',node,e);
+  const event = new CustomEvent('end',{ detail: e });
+  node.dispatchEvent(event);
+
             
             this.end = function() { return this; };
         };
@@ -182,12 +190,18 @@ export default    function PolylineDrawer(opt) {
         
         this.inProgress = true;
         
+ /*
         jSvg.on({
             'mousemove':mousemove,
             'mousedown':mousedown,
             'dblclick':dblclick
         });		
-        
+   */
+
+        jSvg[0].addEventListener("mousemove", mousemove);
+        jSvg[0].addEventListener("mousedown", mousedown);
+        jSvg[0].addEventListener("dblclick", dblclick);
+
         mousedown(e);
         
         return this;

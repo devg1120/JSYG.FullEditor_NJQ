@@ -87,11 +87,14 @@ export default    function ShapeDrawer(opt) {
         }
         
         function mouseupFct(e) {
-            
+            /*
             new JSYG(document).off({
                 'mousemove':mousemoveFct,
                 'mouseup':mouseupFct
             });
+		*/
+        new JSYG(document)[0].removeEventListener("mousemove", mousemoveFct);
+        new JSYG(document)[0].removeEventListener("mouseup", mouseupFct);
             
             var dim = line.getDim();
             
@@ -101,11 +104,15 @@ export default    function ShapeDrawer(opt) {
             
             that.inProgress = false;
         }
-        
+        /*
         new JSYG(document).on({
             'mousemove':mousemoveFct,
             'mouseup':mouseupFct
         });
+	*/
+        new JSYG(document)[0].addEventListener("mousemove", mousemoveFct);
+        new JSYG(document)[0].addEventListener("mouseup", mouseupFct);
+
         
         this.inProgress = true;
         

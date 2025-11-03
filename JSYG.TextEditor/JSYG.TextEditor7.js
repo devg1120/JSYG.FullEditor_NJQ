@@ -188,10 +188,19 @@ export   class TextEditor extends StdConstruct {
       this.cursor.disable();
       this.keyboard.disable();
 
+/*                                            //GUSA
       new JSYG(this.container)
         .removeClass(this.className)
         .resetTransf()
         .detach();
+*/
+
+      new JSYG(this.container)[0].classList.remove(this.className);
+      var parentNode = this.container.parentNode;
+      if (parentNode) {    
+         parentNode.removeChild(this.container);
+      }
+
 
       this.display = false;
 
@@ -341,7 +350,12 @@ export   class TextEditor extends StdConstruct {
       this.from = null;
       this.to = null;
 
-      new JSYG(this.container).detach();
+      //new JSYG(this.container).detach();  //GUSA
+      var parentNode = this.container.parentNode;
+      if (parentNode) {    
+         parentNode.removeChild(this.container);
+      }
+     
 
       this.display = false;
 
@@ -520,13 +534,17 @@ export   class TextEditor extends StdConstruct {
         that.dblclick(e);
       }
 
-      new JSYG(this.textEditor.container).on("mousedown", start);
-      new JSYG(this.textEditor.container).on("dblclick", dblclick);
+      //new JSYG(this.textEditor.container).on("mousedown", start);
+      //new JSYG(this.textEditor.container).on("dblclick", dblclick);
+      new JSYG(this.textEditor.container)[0].addEventListener("mousedown", start);
+      new JSYG(this.textEditor.container)[0].addEventListener("dblclick", dblclick);
 
       this.disable = function () {
         this.hide();
-        new JSYG(this.textEditor.container).off("mousedown", start);
-        new JSYG(this.textEditor.container).off("dblclick", dblclick);
+        //new JSYG(this.textEditor.container).off("mousedown", start);
+        //new JSYG(this.textEditor.container).off("dblclick", dblclick);
+        new JSYG(this.textEditor.container)[0].removeEventListener("mousedown", start);
+        new JSYG(this.textEditor.container)[0].removeEventListener("dblclick", dblclick);
         this.enabled = false;
         return this;
       };
@@ -711,9 +729,11 @@ export   class TextEditor extends StdConstruct {
         })
         .css("visibility", "visible")
         .css("stroke", color)
-        .addClass(this.className)
+        //.addClass(this.className)          //GUSA
         .setMtx(jNode.getMtx(this.textEditor.container))
-        .appendTo(this.textEditor.container);
+        .appendTo_(this.textEditor.container);
+
+      jCont[0].classList.add(this.className);   //GUSA
 
       this.interval = window.setInterval(() => {
         jCont.css(
@@ -734,7 +754,11 @@ export   class TextEditor extends StdConstruct {
     hide() {
       window.clearInterval(this.interval);
 
-      new JSYG(this.container).detach();
+      //new JSYG(this.container).detach();  //GUSA
+      var parentNode = this.container.parentNode;
+      if (parentNode) {
+         parentNode.removeChild(this.container);
+      }
 
       this.display = false;
 
@@ -771,11 +795,13 @@ export   class TextEditor extends StdConstruct {
 
       const mousedown = this._mousedown.bind(this);
 
-      new JSYG(this.textEditor.container).on("mousedown", mousedown);
+      //new JSYG(this.textEditor.container).on("mousedown", mousedown);
+      new JSYG(this.textEditor.container)[0].addEventListener("mousedown", mousedown);
 
       this.disable = function () {
         this.hide();
-        new JSYG(this.textEditor.container).off("mousedown", mousedown);
+        //new JSYG(this.textEditor.container).off("mousedown", mousedown);
+        new JSYG(this.textEditor.container)[0].removeEventListener("mousedown", mousedown);
         this.enabled = false;
         return this;
       };
@@ -1275,10 +1301,20 @@ export   class TextEditor extends StdConstruct {
         compositionend: this._compositionend.bind(this),
       };
 
-      new JSYG(document).on(fcts);
+      //new JSYG(document).on(fcts);
+      new JSYG(document)[0].addEventListener("keydown", fcts["keydown"]);
+      new JSYG(document)[0].addEventListener("keypress", fcts["keypress"]);
+      new JSYG(document)[0].addEventListener("compositionstart", fcts["compositionstart"]);
+      new JSYG(document)[0].addEventListener("compositionupdate", fcts["compositionupdate"]);
+      new JSYG(document)[0].addEventListener("compositionend", fcts["compositionend"]);
 
       this.disable = function () {
-        new JSYG(document).off(fcts);
+        //new JSYG(document).off(fcts);
+      new JSYG(document)[0].removeEventListener("keydown", fcts["keydown"]);
+      new JSYG(document)[0].removeEventListener("keypress", fcts["keypress"]);
+      new JSYG(document)[0].removeEventListener("compositionstart", fcts["compositionstart"]);
+      new JSYG(document)[0].removeEventListener("compositionupdate", fcts["compositionupdate"]);
+      new JSYG(document)[0].removeEventListener("compositionend", fcts["compositionend"]);
         this.enabled = false;
         return this;
       };

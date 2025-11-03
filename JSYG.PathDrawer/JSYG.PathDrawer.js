@@ -106,7 +106,8 @@ export default    function PathDrawer(opt) {
         //path = new JSYG.Path(path);
         path = new Path(path);
         
-        if (!path.parent().length) throw new Error("Il faut attacher l'objet path à l'arbre DOM");
+        //if (!path.parent().length) throw new Error("Il faut attacher l'objet path à l'arbre DOM"); //GUSA
+        if (!path[0].parentNode) throw new Error("Il faut attacher l'objet path à l'arbre DOM"); //GUSA
         
         var node = path[0],
         jSvg = this.area ? new JSYG(this.area) : path.offsetParent('farthest'),
@@ -190,30 +191,41 @@ export default    function PathDrawer(opt) {
             }
             
             if (autoSmooth) path.autoSmooth(path.nbSegs()-1);
-            
+         /*   
             jSvg.off({
                 'mousemove':mousemove,
                 'mousedown':mousedown,
                 'dblclick':dblclick
             });
-            
+	    */
+
+        jSvg[0].removeEventListener("mousemove", mousemove);
+        jSvg[0].removeEventListener("mousedown", mousedown);
+        jSvg[0].removeEventListener("dblclick", dblclick);
+          
             that.inProgress = false;
             
-            that.trigger('end',node,e);
-            
+            //that.trigger('end',node,e);
+  const event = new CustomEvent('end',{ detail: e });
+  node.dispatchEvent(event);
+
             that.end = function() { return this; };
         };
         
         if (path.nbSegs() === 0) path.addSeg('M',xy.x,xy.y);
         
         that.inProgress = true;
-        
+ /*       
         jSvg.on({
             'mousemove':mousemove,
             'mousedown':mousedown,
             'dblclick':dblclick
         });		
-        
+*/
+        jSvg[0].addEventListener("mousemove", mousemove);
+        jSvg[0].addEventListener("mousedown", mousedown);
+        jSvg[0].addEventListener("dblclick", dblclick);
+       
         mousedown(e);
         
         return this;
@@ -229,7 +241,8 @@ export default    function PathDrawer(opt) {
         //path = new JSYG.Path(path);
         path = new Path(path);
         
-        if (!path.parent().length) throw new Error("Il faut attacher l'objet path à l'arbre DOM");
+        //if (!path.parent().length) throw new Error("Il faut attacher l'objet path à l'arbre DOM"); //GUSA
+        if (!path[0].parentNode) throw new Error("Il faut attacher l'objet path à l'arbre DOM");
         
         var node = path[0],
         autoSmooth = this.segment.toLowerCase() === 'autosmooth',
@@ -286,15 +299,20 @@ export default    function PathDrawer(opt) {
             
             that.inProgress = false;
             
-            jSvg.off('mousemove',mousemove);
+            //jSvg.off('mousemove',mousemove);
+        jSvg[0].removeEventListener('mousemove',mousemove);
             
-            new JSYG(document).off('mouseup',mouseup);
+            //new JSYG(document).off('mouseup',mouseup);
+        new JSYG(document)[0].removeEventListener('mouseup',mouseup);
                         
             that.end = function() { return this; };
         };
         
-        jSvg.on('mousemove',mousemove);
-        new JSYG(document).on('mouseup',mouseup);
+        //jSvg.on('mousemove',mousemove);
+        jSvg[0].addEventListener('mousemove',mousemove);
+
+        //new JSYG(document).on('mouseup',mouseup);
+        new JSYG(document)[0].addEventListener('mouseup',mouseup);
         
         e.preventDefault();
         
