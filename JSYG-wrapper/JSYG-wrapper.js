@@ -3626,7 +3626,15 @@ function getOffsetParent(element) {
             
             var $this = new JSYG(this);
             
-            $this.insertBefore( $this.prev() );
+            //$this.insertBefore( $this.prev() );
+
+            let target = $this[0].previousElementSibling
+            const parentElement = target.parentNode;
+            if (parentElement) {
+               parentElement.insertBefore($this[0], target);
+            }
+
+
         });
     };
     
@@ -3655,7 +3663,14 @@ function getOffsetParent(element) {
             
             var $this = new JSYG(this);
             
-            $this.insertAfter( $this.next() );
+            //$this.insertAfter( $this.next() );
+           let next = $this[0].nextElementSibling;
+           const parentElement = next.parentNode;
+            if (parentElement) {                         
+                let nextSibling = next.nextSibling;
+                parentElement.insertBefore($this[0], nextSibling);
+            }
+
         });
     };
     
