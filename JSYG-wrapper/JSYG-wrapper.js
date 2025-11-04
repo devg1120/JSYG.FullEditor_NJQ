@@ -7,6 +7,7 @@ import { push } from "../jquery/src/var/push.js";
 import { access } from "../jquery/src/core/access.js";
 import { dataUser } from "../jquery/src/data/var/dataUser.js";
 import { nodeName } from "../jquery/src/core/nodeName.js";
+//import { $ } from "../jquery/src/core.js";
 
 //import Path  from "../JSYG.Path/JSYG.Path.js"
 
@@ -16,6 +17,7 @@ import { nodeName } from "../jquery/src/core/nodeName.js";
 
 var rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,
 	rmultiDash = /[A-Z]/g;
+
 
 function getData( data ) {
 	if ( data === "true" ) {
@@ -41,6 +43,76 @@ function getData( data ) {
 
 	return data;
 }
+/*
+function attr( elem, name, value ) {
+               var ret, hooks,
+                        nType = elem.nodeType;
+
+                // Don't get/set attributes on text, comment and attribute nodes
+                if ( nType === 3 || nType === 8 || nType === 2 ) {
+                        return;
+                }
+
+                // Fallback to prop when attributes are not supported
+                if ( typeof elem.getAttribute === "undefined" ) {
+                        return jQuery.prop( elem, name, value );
+                }
+
+                // Attribute hooks are determined by the lowercase version
+                // Grab necessary hook if one is defined
+                if ( nType !== 1 || !jQuery.isXMLDoc( elem ) ) {
+                        hooks = jQuery.attrHooks[ name.toLowerCase() ];
+                }
+                if ( value !== undefined ) {
+                        if ( value === null ||
+
+                                // For compat with previous handling of boolean attributes,
+                                // remove when `false` passed. For ARIA attributes -
+                                // many of which recognize a `"false"` value - continue to
+                                // set the `"false"` value as jQuery <4 did.
+                                ( value === false && name.toLowerCase().indexOf( "aria-" ) !== 0 ) ) {
+
+                                //jQuery.removeAttr( elem, name );
+                                removeAttr( elem, name );
+                                return;
+                        }
+
+                        if ( hooks && "set" in hooks &&
+                                ( ret = hooks.set( elem, value, name ) ) !== undefined ) {
+                                return ret;
+                        }
+
+                        elem.setAttribute( name, value );
+                        return value;
+                }
+
+                if ( hooks && "get" in hooks && ( ret = hooks.get( elem, name ) ) !== null ) {
+                        return ret;
+                }
+
+                ret = elem.getAttribute( name );
+
+                // Non-existent attributes return null, we normalize to undefined
+                return ret == null ? undefined : ret;
+
+}
+
+function    removeAttr( elem, value ) {
+                var name,
+                        i = 0,
+
+                        // Attribute names can contain non-HTML whitespace characters
+                        // https://html.spec.whatwg.org/multipage/syntax.html#attributes-2
+                        attrNames = value && value.match( rnothtmlwhite );
+
+                if ( attrNames && elem.nodeType === 1 ) {
+                        while ( ( name = attrNames[ i++ ] ) ) {
+                                elem.removeAttribute( name );
+                        }
+		}
+}
+
+*/
 
 function dataAttr( elem, key, data ) {
 	var name;
@@ -79,6 +151,14 @@ function dataAttr( elem, key, data ) {
                 return first;
         }
 
+         function merge2 ( first, second ) {
+                var i = first.length;
+
+                first[ i++ ] = second;
+                first.length = i;
+
+                return first;
+        }
 
         function find (selector, context) {
 		/*
@@ -111,6 +191,7 @@ function dataAttr( elem, key, data ) {
     rsvgLink = /^<(svg:a)\s*\/?>(?:<\/\1>|)$/,
     svg = window.document && window.document.createElementNS && window.document.createElementNS(NS.svg,'svg');
 	
+
 export default   function JSYG(arg,context) {
 
 	if (typeof arg === 'function') {
@@ -183,7 +264,12 @@ export default   function JSYG(arg,context) {
         if (array) {
            merge(this, array  );
         } else {
-           merge(this,  $(arg,context) );
+           //console.log(typeof arg , typeof context);  //GUSA
+           merge(this,  $(arg,context) );  //GUSA
+           //merge(this,  init(arg,context) );  //GUSA
+
+	   
+ 
         }
 
 	  //console.log("result", this)			
@@ -421,7 +507,8 @@ JSYG.prototype.removeData_ = function( key ) {
             for (var n in name) this.attr(n,name[n]);
             return this;
         }
-        else if ($.isFunction(value)) {
+        //else if ($.isFunction(value)) {    //GUSA
+        else if (typeof value === 'function') {
 			
             return this.each(function(j) {
                 var $this = new JSYG(this);
@@ -440,7 +527,10 @@ JSYG.prototype.removeData_ = function( key ) {
             return this.each(function() {
                 //jQuery passe tous les attributs en minuscule, ce qui n'est pas le cas des attributs SVG
                 if (isSVG(this)) this.setAttribute(name,value);
-                else $.attr(this,name,value); 
+                //else $.attr(this,name,value);//GUSA cash
+                //else attr(this,name,value);//GUSA cash
+                else this.setAttribute(name, value);
+
             });			
         }
 	
@@ -452,7 +542,9 @@ JSYG.prototype.removeData_ = function( key ) {
         else return this.each(function() {
             //jQuery passe tous les attributs en minuscule, ce qui n'est pas le cas des attributs SVG
             if (isSVG(this)) this.removeAttribute(name);
-            else $.removeAttr(this,name);
+            //else $.removeAttr(this,name);
+            //else removeAttr(this,name);
+	    else this.removeAttribute(name);
         });
     };
 	
@@ -519,6 +611,25 @@ import { isArrayLike } from "../jquery/src/core/isArrayLike.js";
         else return $.each(list,callback);
     };
 */
+
+        JSYG.makeArray2 = function( arr, results ) {
+                var ret = results || [];
+
+                if ( arr != null ) {
+                        if ( isArrayLike( Object( arr ) ) ) {
+                                //jQuery.merge( ret,
+                                merge( ret,
+                                        typeof arr === "string" ?
+                                                [ arr ] : arr
+                                );
+                        } else {
+                                push.call( ret, arr );
+                        }
+                }
+
+                return ret;
+        }
+
     JSYG.makeArray = function(list) {
 						
         if (typeof list == 'object' && typeof list.numberOfItems == "number") { //SVGList
@@ -529,7 +640,8 @@ import { isArrayLike } from "../jquery/src/core/isArrayLike.js";
 			
             return tab;
         }
-        else return $.makeArray(list);		
+        //else return $.makeArray(list);		
+        else return JSYG.makeArray2(list);		
     };
 
     function getFarthestViewportElement(elmt) {
@@ -2883,7 +2995,7 @@ function getOffsetParent(element) {
         var mtx,rect;
         
         //if (evt instanceof JSYG.Event) evt = evt.originalEvent;
-        if (evt instanceof $.Event) evt = evt.originalEvent;
+        //if (evt instanceof $.Event) evt = evt.originalEvent;               //GUSA cash
         
         if (ref && !(ref instanceof JSYG)) ref = new JSYG(ref);
         

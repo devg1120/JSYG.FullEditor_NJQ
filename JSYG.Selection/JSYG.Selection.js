@@ -221,7 +221,6 @@ function each( obj, callback ) {
      */
     Selection.prototype.setSelection = function(arg,e) {
 
-        console.trace("setSelection");
 
         var that = this;
         
@@ -307,7 +306,6 @@ function each( obj, callback ) {
         
         resize.on('dragstart',function(e) {
         //resize[0].addEventListener('dragstart',function(e) {
-             console.log("dragstart");
             //list.each(function() {
             each(list, function() {  //GUSA
                 
