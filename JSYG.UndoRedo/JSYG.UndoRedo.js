@@ -1,5 +1,3 @@
-import JSYG                from "../JSYG-wrapper/JSYG-wrapper.js"
-
 /*jshint forin:false, eqnull:true*/
 /* globals JSYG*/
 /*
@@ -174,12 +172,9 @@ export default    function UndoRedo(arg,opt) {
         //on vide le début du tableau si on avait annulé quelque chose
         while (this.current>0) { this.stack.shift(); this.current--; }
 
-        //var clone = $(this.node).clone();  //GUSA
+        var clone = $(this.node).clone();
 
-        if (!JSYG(this.node).length) return this;
-        var clone = JSYG(JSYG(this.node)[0].cloneNode());
         if (!clone.length) return this;
-
 
         this.stack.unshift( { "label":label, "node" : clone[0] } );
 

@@ -468,7 +468,10 @@ export default class FullEditor extends JSYG {
             
             this.undoRedo.on("change",() => {
                 //that.hideEditors();
-                that.trigger("change", that, that.getDocument() );
+                //that.trigger("change", that, that.getDocument() );
+            const event = new CustomEvent("change", { detail:  that.getDocument() });
+            that[0].dispatchEvent(event);
+
             });
         }
 
